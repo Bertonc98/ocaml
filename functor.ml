@@ -24,7 +24,7 @@ module Set =
           | hd::tl -> match Elt.compare hd x with
                         Equal -> true
                         | Less -> false
-                        | Greater -> member x tl                        
+                        | Greater -> member x tl
     end;;
 
 module StringSet = Set(OrderedString);;

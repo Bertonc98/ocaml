@@ -1,13 +1,19 @@
-exception Empty_stack;;
+module Stack =
+  struct
+    type 'a stack = { mutable c : 'a list; }
 
-let push s el = el::s;;
+    exception Empty_stack
 
-let top = function
-  [] -> raise Empty_stack
-  | h::t -> h;;
+    let push s el = s.c<-el::s.c
 
-let pop = function
-  [] -> raise Empty_stack
-  | h::t -> h::t;;
+    let top = function
+      [] -> raise Empty_stack
+      | h::_ -> h
 
-let empty() = [];;
+    let pop s =
+      match s.c with
+        [] -> raise Empty_stack
+        | h::t -> s.c <-t
+
+    let empty() = {c=[]};;
+  end;;
