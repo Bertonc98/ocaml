@@ -16,4 +16,16 @@ module Stack =
         | h::t -> s.c <-t
 
     let empty() = {c=[]};;
+    
+    let not_user_usable_function() = print_string("Non dovresti vedere ciò\n")
   end;;
+
+module type STACK =
+	sig
+		type 'a stack = { mutable c : 'a list; }
+		exception Empty_stack
+		val push : 'a stack -> 'a -> unit
+		val top : 'a list -> 'a
+		val pop : 'a stack -> unit
+		val empty : unit -> 'a stack
+	end;;
