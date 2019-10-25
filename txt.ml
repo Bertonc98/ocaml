@@ -39,3 +39,11 @@ let read_text ic =
   in read_text input_channel [];;
 
 let occorrenze = read_text input_channel;;
+exception Not_in
+let find w l =
+  let rec find w l =
+    match l with
+      h::t when h.parola=w->h
+      |h::t when h.parola<>w-> find w t
+      |_->raise Not_in
+  in find w l;;
