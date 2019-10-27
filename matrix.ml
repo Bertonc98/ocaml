@@ -49,14 +49,41 @@ module Matrix =
 
     exception Impossible_Product;;
 
+    let prod_matrix m1 m2=
+      let m3 = zeros (Array.length m1) (Array.length m2.(0))
+      in m3;;
+
+
+
     let ( * ) m1 m2=
       if (Array.length m1.(0))<>(Array.length m2) then raise Impossible_Product
       else
-        print_string("Va\n");;
+      let m3 = prod_matrix m1 m2
+      in
+        let prod_r_c  m1_r_index m2_c_index _=
+          let sum x _= m3.(m1_r_index).(m2_c_index)<-m3.(m1_r_index).(m2_c_index)+(m1.(m1_r_index).(x))*(m2.(x).(m2_c_index))
+          in
+            Array.iteri sum m1.(m1_r_index)
+            in
+              let row row_index _= Array.iteri (prod_r_c row_index) m3.(row_index)
+              in
+                Array.iteri row m3;m3;;
+
 end;;
 
 
 
 let a=Matrix.zeros 3 2;;
 let b=Matrix.zeros 2 3;;
-( * ) a b;;
+a.(0).(0)<-1;;
+a.(1).(1)<-1;;
+a.(2).(1)<-1;;
+b.(0).(0)<-2;;
+b.(1).(1)<-2;;
+b.(1).(2)<-2;;
+let c=Matrix.zeros 3 3;;
+Matrix.print_matrix a;;
+print_string("\n\n");;
+Matrix.print_matrix b;;
+print_string("\n\n");;
+Matrix.print_matrix (Matrix.( * ) a b);;
