@@ -5,7 +5,7 @@ module type GraphADT =
     val is_empty : 'a graph -> bool
     val add_node : 'a graph -> 'a -> 'a graph
     val add_arc : 'a graph -> 'a -> 'a -> 'a graph
-    (*val visit : 'a graph -> 'a list *)
+    val visit : 'a graph -> 'a list
     exception EmptyGraph
     exception NotInGraph
     exception InvalidGraph
@@ -50,15 +50,12 @@ module Graph : GraphADT =
     let visit g =
       match g with
         Graph([],[])->raise EmptyGraph
-        |Graph(nodes, arcs)-> if not(is_in nodes a) then raise NotInGraph
-                              else
-                              let rec visit g visited =
-                                match g with
-                                  Graph((h::t),arcs)-> let adj=adjiacents g h in
-                                                       if (is_in visited h) then visit Graph(t, arcs)
-                                                       else
-                                                       visit Graph(t,arcs)
-                              in visit g [];;
+        |Graph(nodes, arcs)-> let rec visit l visited =
+                                match l with
+                                  h::t when not(is_in visited h) -> visit t (visit (adjiacents g h) (h::visited))
+                                  |h::t -> visit t visited
+                                  |[]->visited
+                              in visit nodes [];;
 
 
   end;;
@@ -67,11 +64,9 @@ module Graph : GraphADT =
 #use "social.ml";;
 open Graph;;
 let a = empty();;
-let a = add_node a "Frizzi";;
-let a = add_node a "Frizzi";;
-let a = add_node a "Pallazzi";;
 let a = add_arc a "Frizzi" "Pallazzi";;
 let a = add_arc a "Frizzi" "Gastani";;
 let a = add_arc a "Gastani" "Sinchiurli";;
+let a = add_arc a "Sinchiurli" "Schifarteruft";;
 visit a;;
   *)
