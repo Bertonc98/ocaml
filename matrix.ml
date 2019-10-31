@@ -53,8 +53,6 @@ module Matrix =
       let m3 = zeros (Array.length m1) (Array.length m2.(0))
       in m3;;
 
-
-
     let ( * ) m1 m2=
       if (Array.length m1.(0))<>(Array.length m2) then raise Impossible_Product
       else
